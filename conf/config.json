@@ -1,0 +1,10 @@
+{
+  "db": {
+    "host": "db-project-do-user-31567055-0.e.db.ondigitalocean.com",
+    "port": 25060,
+    "user": "doadmin",
+    "password": "AVNS_6m5d3eJYU8otCRjTpJI",
+    "database": "ticket_db",
+    "ssl_ca": "C:/Users/hanib/Downloads/ca-certificate.crt"
+  }
+}
