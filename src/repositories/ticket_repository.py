@@ -23,3 +23,12 @@ class TicketRepository:
             (event_id,),
         )
         return cur.fetchall()
+
+    def mark_sold(self, ticket_id: int) -> int:
+
+        cur = self.connection.cursor()
+        cur.execute(
+            "update ticket set is_sold = 1 where id = %s and is_sold = 0",
+            (ticket_id,),
+        )
+        return cur.rowcount
