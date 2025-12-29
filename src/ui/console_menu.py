@@ -1,6 +1,7 @@
 from src.db.connection import create_connection
 from src.repositories.event_repository import EventRepository
 from src.repositories.ticket_repository import TicketRepository
+from src.repositories.report_repository import ReportRepository
 from src.services.order_service import OrderService
 
 
@@ -15,12 +16,14 @@ def run_menu() -> None:
     event_repo = EventRepository(conn)
     ticket_repo = TicketRepository(conn)
     order_service = OrderService(conn)
+    report_repo = ReportRepository(conn)
 
     while True:
         print("\n=== ticket system ===")
         print("1) vypsat aktivni akce")
         print("2) detail akce (volne vstupenky)")
         print("3) koupit vstupenku (vytvorit objednavku)")
+        print("4) report: prodeje podle akce")
         print("0) konec")
 
         choice = input("> ").strip()
@@ -102,6 +105,24 @@ def run_menu() -> None:
                 print("CHYBA: zadej platne cislo.")
             except Exception as e:
                 print("CHYBA: objednavku se nepodarilo vytvorit.")
+                print("Detail:", e)
+
+        elif choice == "4":
+            try:
+                rows = report_repo.event_sales()
+                if not rows:
+                    print("zadna data pro report.")
+                    continue
+
+                print("\nEVENT | MESTO | START | SOLD/TOTAL | REVENUE")
+                print("-" * 90)
+                for r in rows:
+                    sold_total = f"{r['tickets_sold']}/{r['tickets_total']}"
+                    print(
+                        f"{r['event_name']} | {r['city']} | {r['start_at']} | {sold_total} | {r['revenue']}"
+                    )
+            except Exception as e:
+                print("CHYBA: report se nepodarilo nacist.")
                 print("Detail:", e)
 
         elif choice == "0":
