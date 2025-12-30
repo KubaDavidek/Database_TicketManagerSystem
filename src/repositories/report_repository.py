@@ -23,3 +23,19 @@ class ReportRepository:
             """
         )
         return cur.fetchall()
+
+    def customer_orders(self):
+        cur = self.connection.cursor(dictionary=True)
+        cur.execute(
+            """
+            select
+                customer_id,
+                full_name,
+                email,
+                orders_count,
+                last_order_at
+            from v_customer_orders
+            order by orders_count desc, full_name asc;
+            """
+        )
+        return cur.fetchall()

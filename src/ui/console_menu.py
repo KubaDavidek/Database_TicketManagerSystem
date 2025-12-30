@@ -24,6 +24,7 @@ def run_menu() -> None:
         print("2) detail akce (volne vstupenky)")
         print("3) koupit vstupenku (vytvorit objednavku)")
         print("4) report: prodeje podle akce")
+        print("5) report: zakaznici a objednavky")
         print("0) konec")
 
         choice = input("> ").strip()
@@ -124,6 +125,24 @@ def run_menu() -> None:
             except Exception as e:
                 print("CHYBA: report se nepodarilo nacist.")
                 print("Detail:", e)
+
+        elif choice == "5":
+            try:
+                rows = report_repo.customer_orders()
+                if not rows:
+                    print("zadna data pro report.")
+                    continue
+
+                print("\nZAKAZNIK | EMAIL | OBJEDNAVKY | NAPOSLEDY")
+                print("-" * 90)
+                for r in rows:
+                    print(
+                        f"{r['full_name']} | {r['email']} | {r['orders_count']} | {r['last_order_at']}"
+                    )
+            except Exception as e:
+                print("CHYBA: report se nepodarilo nacist.")
+                print("Detail:", e)
+
 
         elif choice == "0":
             try:
