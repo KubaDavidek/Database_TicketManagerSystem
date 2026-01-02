@@ -94,6 +94,13 @@ def run_menu() -> None:
                     print("CHYBA: email nevypada validne.")
                     continue
 
+                confirm = input(f"Opravdu koupit ticket {ticket_id}? (a/n): ").strip().lower()
+                if confirm != "a":
+                    print("Objednavka zrusena.")
+                    continue
+
+
+
                 order_id = order_service.buy_single_ticket(
                     full_name=full_name,
                     email=email,
