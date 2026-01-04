@@ -25,6 +25,7 @@ def run_menu() -> None:
         print("3) koupit vstupenku (vytvorit objednavku)")
         print("4) report: prodeje podle akce")
         print("5) report: zakaznici a objednavky")
+        print("6) zrusit objednavku")
         print("0) konec")
 
         choice = input("> ").strip()
@@ -149,6 +150,18 @@ def run_menu() -> None:
             except Exception as e:
                 print("CHYBA: report se nepodarilo nacist.")
                 print("Detail:", e)
+
+        elif choice == "6":
+            try:
+                order_id = int(input("Zadej ID objednavky ke zruseni: ").strip())
+                order_service.cancel_order(order_id)
+                print("Objednavka zrusena a ticket uvolnen.")
+            except ValueError:
+                print("Zadej platne cislo.")
+            except Exception as e:
+                print("CHYBA: objednavku se nepodarilo zrusit.")
+                print("Detail:", e)
+
 
 
         elif choice == "0":

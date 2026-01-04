@@ -16,3 +16,7 @@ class OrderRepository:
             "insert into order_item (order_id, ticket_id, quantity) values (%s, %s, %s)",
             (order_id, ticket_id, quantity),
         )
+
+    def cancel_order(self, order_id: int):
+        cur = self.connection.cursor()
+        cur.execute("update `order` set status = 'cancelled' where id = %s", (order_id,))

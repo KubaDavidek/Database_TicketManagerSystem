@@ -32,3 +32,16 @@ class TicketRepository:
             (ticket_id,),
         )
         return cur.rowcount
+
+    def unmark_sold_by_order(self, order_id: int):
+        cur = self.connection.cursor()
+        cur.execute(
+            """
+            update ticket t
+            join order_item oi on oi.ticket_id = t.id
+            set t.is_sold = 0
+            where oi.order_id = %s
+            """,
+            (order_id,),
+        )
+

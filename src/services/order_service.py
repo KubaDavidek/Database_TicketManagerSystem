@@ -10,6 +10,19 @@ class OrderService:
         self.orders = OrderRepository(connection)
         self.tickets = TicketRepository(connection)
 
+    def cancel_order(self, order_id: int):
+        try:
+            self.connection.start_transaction()
+
+            self.tickets.unmark_sold_by_order(order_id)
+            self.orders.cancel_order(order_id)
+
+            self.connection.commit()
+        except Exception:
+            self.connection.rollback()
+            raise
+
+
     def buy_single_ticket(
         self,
         full_name: str,
@@ -38,6 +51,10 @@ class OrderService:
             self.connection.commit()
             return order_id
 
+
+
         except Exception:
             self.connection.rollback()
             raise
+
+
