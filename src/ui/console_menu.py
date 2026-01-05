@@ -4,6 +4,9 @@ from src.repositories.ticket_repository import TicketRepository
 from src.repositories.report_repository import ReportRepository
 from src.services.order_service import OrderService
 
+from src.importers.venue_importer import VenueImporter
+from src.importers.event_importer import EventImporter
+
 
 def run_menu() -> None:
     try:
@@ -18,6 +21,9 @@ def run_menu() -> None:
     order_service = OrderService(conn)
     report_repo = ReportRepository(conn)
 
+    venue_importer = VenueImporter(conn)
+    event_importer = EventImporter(conn)
+
     while True:
         print("\n=== ticket system ===")
         print("1) vypsat aktivni akce")
@@ -25,7 +31,8 @@ def run_menu() -> None:
         print("3) koupit vstupenku (vytvorit objednavku)")
         print("4) report: prodeje podle akce")
         print("5) report: zakaznici a objednavky")
-        print("6) zrusit objednavku")
+        print("7) import: venues (CSV)")
+        print("8) import: events (JSON)")
         print("0) konec")
 
         choice = input("> ").strip()
@@ -100,15 +107,13 @@ def run_menu() -> None:
                     print("Objednavka zrusena.")
                     continue
 
-
-
                 order_id = order_service.buy_single_ticket(
                     full_name=full_name,
                     email=email,
                     phone=phone,
                     ticket_id=ticket_id,
                 )
-                print(f"Objednavka vytvorena. ID objednavky: {order_id}")
+                print(f"OK ✅ Objednavka vytvorena. ID objednavky: {order_id}")
 
             except ValueError:
                 print("CHYBA: zadej platne cislo.")
@@ -151,18 +156,21 @@ def run_menu() -> None:
                 print("CHYBA: report se nepodarilo nacist.")
                 print("Detail:", e)
 
-        elif choice == "6":
+        elif choice == "7":
             try:
-                order_id = int(input("Zadej ID objednavky ke zruseni: ").strip())
-                order_service.cancel_order(order_id)
-                print("Objednavka zrusena a ticket uvolnen.")
-            except ValueError:
-                print("Zadej platne cislo.")
+                ok, fail = venue_importer.import_csv("data_import/venues.csv")
+                print(f"Import venues hotovo. OK: {ok}, FAIL: {fail}")
             except Exception as e:
-                print("CHYBA: objednavku se nepodarilo zrusit.")
+                print("CHYBA: import venues se nepodaril.")
                 print("Detail:", e)
 
-
+        elif choice == "8":
+            try:
+                ok, fail = event_importer.import_json("data_import/events.json")
+                print(f"Import events hotovo. OK: {ok}, FAIL: {fail}")
+            except Exception as e:
+                print("CHYBA: import events se nepodaril.")
+                print("Detail:", e)
 
         elif choice == "0":
             try:
