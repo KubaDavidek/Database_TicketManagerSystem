@@ -111,6 +111,7 @@ def run_menu() -> None:
                     full_name=full_name,
                     email=email,
                     phone=phone,
+                    event_id=event_id,
                     ticket_id=ticket_id,
                 )
                 print(f"OK ✅ Objednavka vytvorena. ID objednavky: {order_id}")

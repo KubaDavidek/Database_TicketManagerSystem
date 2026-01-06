@@ -1,5 +1,5 @@
 from typing import List, Dict
-
+from typing import Optional, Dict
 
 class TicketRepository:
     def __init__(self, connection):
@@ -44,4 +44,20 @@ class TicketRepository:
             """,
             (order_id,),
         )
+
+    def find_by_id(self, ticket_id: int) -> Optional[Dict]:
+        cur = self.connection.cursor(dictionary=True)
+        cur.execute(
+            "select id, event_id, seat_id, price, is_sold from ticket where id = %s",
+            (ticket_id,),
+        )
+        return cur.fetchone()
+
+    def is_available_for_event(self, ticket_id: int, event_id: int) -> bool:
+        cur = self.connection.cursor()
+        cur.execute(
+            "select 1 from ticket where id = %s and event_id = %s and is_sold = 0",
+            (ticket_id, event_id),
+        )
+        return cur.fetchone() is not None
 
