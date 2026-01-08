@@ -1,0 +1,83 @@
+1. Úvod
+
+Projekt Ticket Management System je konzolová aplikace napsaná v jazyce Python, která umožňuje správu a prodej vstupenek na kulturní a sportovní akce. Aplikace využívá relační databázi MySQL a umožňuje uživateli zobrazovat akce, kupovat vstupenky, rušit objednávky a generovat přehledové reporty.
+
+Projekt byl vytvořen jako školní práce splňující zadání D1 (Repository pattern).
+
+2. Použité technologie
+
+Programovací jazyk: Python 3.11
+
+Databázový systém: MySQL
+
+Databázový přístup: mysql-connector-python
+
+Návrhový vzor: Repository (DAO) pattern
+
+Uživatelské rozhraní: Konzolové (CLI)
+
+3. Architektura aplikace
+
+Aplikace je rozdělena do několika vrstev:
+
+UI vrstva (ui/) – komunikace s uživatelem (menu, vstupy, výstupy)
+
+Servisní vrstva (services/) – aplikační logika (nákup, rušení objednávek)
+
+Datová vrstva (repositories/) – přístup k databázi (CRUD operace)
+
+Import (importers/) – import dat z CSV a JSON
+
+Databáze (db/) – SQL skripty a schéma databáze
+
+Toto rozdělení splňuje princip SRP (Single Responsibility Principle)
+
+4. Databázový model
+
+Databáze obsahuje následující hlavní tabulky:
+
+venue – místa konání akcí
+
+event – akce
+
+seat – sedadla
+
+ticket – vstupenky
+
+customer – zákazníci
+
+order – objednávky
+
+order_item – položky objednávky
+
+tag, event_tag – tagy akcí (M:N vazba)
+
+Obsahuje také pohledy:
+
+v_event_sales – přehled prodejů podle akcí
+
+v_customer_orders – přehled objednávek podle zákazníků
+
+5. Funkcionalita systému
+
+Aplikace umožňuje:
+
+zobrazit seznam aktivních akcí
+
+zobrazit dostupné vstupenky pro konkrétní akci
+
+koupit vstupenku (transakčně přes více tabulek)
+
+zrušit objednávku a uvolnit vstupenku
+
+generovat report prodejů a zákazníků
+
+importovat data z CSV (venue) a JSON (event)
+
+6. Práce s transakcemi
+
+Operace nákupu a rušení objednávky jsou prováděny v databázových transakcích. Pokud dojde k chybě v průběhu operace, změny jsou vráceny zpět pomocí rollbacku, aby byla zachována konzistence databáze.
+
+7. Konfigurace aplikace
+
+Konfigurační soubor conf/config.json obsahuje přihlašovací údaje k databázi a není verzován v repozitáři. V repozitáři je dostupná pouze šablona config.json.

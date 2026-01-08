@@ -5,6 +5,6 @@
     "user": "doadmin",
     "password": "AVNS_6m5d3eJYU8otCRjTpJI",
     "database": "ticket_db",
-    "ssl_ca": "C:/Users/hanib/Downloads/ca-certificate.crt"
+    "ssl_ca": "conf/ca-certificate.crt"
   }
 }
