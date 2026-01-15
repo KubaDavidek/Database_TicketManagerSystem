@@ -15,10 +15,9 @@ def create_connection():
         port=int(cfg["port"]),
         user=cfg["user"],
         password=cfg["password"],
-        database=cfg["database"],
-        ssl_ca=cfg["ssl_ca"],
-        ssl_disabled=False,
+        database=cfg["database"]
     )
+
 
 if __name__ == "__main__":
     try:
