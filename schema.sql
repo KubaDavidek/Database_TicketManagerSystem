@@ -1,3 +1,9 @@
+create database tickets
+  character set utf8mb4
+  collate utf8mb4_unicode_ci;
+
+use tickets;
+
 create table venue (
   id int auto_increment primary key,
   name varchar(120) not null,
@@ -104,3 +110,45 @@ select
 from customer c
 left join `order` o on o.customer_id = c.id
 group by c.id, c.full_name, c.email;
+
+insert into venue (name, city, address) values
+('O2 Arena', 'Praha', 'Českomoravská 2345/17'),
+('Forum Karlín', 'Praha', 'Pernerova 51'),
+('Enteria Arena', 'Pardubice', 'Sukova třída 1735');
+
+insert into event (venue_id, name, start_at, base_price, is_active) values
+(1, 'Koncert: Sample Band', '2026-02-10 19:00:00', 990.00, 1),
+(2, 'Stand-up Night', '2026-02-15 20:00:00', 590.00, 1),
+(3, 'Hokej: Domácí vs Hosté', '2026-02-20 18:00:00', 350.00, 1);
+
+insert into seat (venue_id, sector, seat_row, seat_no, is_accessible) values
+(1, 'A', 1, 1, 0),
+(1, 'A', 1, 2, 0),
+(1, 'A', 1, 3, 1),
+(2, 'B', 1, 1, 0),
+(2, 'B', 1, 2, 0),
+(3, 'C', 1, 1, 0),
+(3, 'C', 1, 2, 0);
+
+insert into ticket (event_id, seat_id, price, is_sold) values
+(1, 1, 990.00, 0),
+(1, 2, 990.00, 0),
+(1, 3, 990.00, 0),
+(2, 4, 590.00, 0),
+(2, 5, 590.00, 0),
+(3, 6, 350.00, 0),
+(3, 7, 350.00, 0);
+
+insert into tag (name) values
+('koncert'),
+('sport'),
+('komedie');
+
+insert into event_tag (event_id, tag_id) values
+(1, 1),
+(2, 3),
+(3, 2);
+
+insert into customer (full_name, email, phone) values
+('Jan Novák', 'jan.novak@email.cz', '777111222'),
+('Petra Svobodová', 'petra.svobodova@email.cz', '777333444');
